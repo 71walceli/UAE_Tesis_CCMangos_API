@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from Hacienda.models import Lectura, Proyecto, Planta,Lote
 
+# TODO Revisar para la validación correcta
 def ValidateLectura(data):
     required ="Este campo es requerido"
     null ="Este campo no puede ser nulo"
@@ -14,10 +15,8 @@ def ValidateLectura(data):
         if data["Id_Planta"] is None:
             print(f"Id_Planta: {null}")
             return f"Id_Planta: {null}"
-        # Verificar si "FechaVisita" está en data
         if "FechaVisita" not in data:
             return f"FechaVisita: {required}"
-        # Verificar si "FechaVisita" es None
         if data["FechaVisita"] is None:
             return f"FechaVisita: {null}"
         if "SyncId" not in data: 

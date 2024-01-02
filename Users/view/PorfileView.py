@@ -12,12 +12,11 @@ from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 class PorfileView(APIView):
-    
     authentication_classes = [SessionAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated]
     @swagger_auto_schema(
-            responses={200: "OK"}
-        )
+        responses={200: "OK"}
+    )
     def get(self, request):
         # Extrae los datos del perfil del usuario actual
         try:
