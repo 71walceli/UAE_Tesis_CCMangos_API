@@ -1,0 +1,37 @@
+
+version: '3.2'
+services:
+  django:
+    build:
+      context: .
+      args:
+        UID: 1000
+        GID: 1000
+      dockerfile: ./django.Dockerfile
+    depends_on:
+      - postgres
+    hostname: django
+    #networks:
+    #  - 71walceli_https-proxy
+    user: "1000:1000"
+    #restart: unless-stopped
+    volumes:
+      - .:/App
+    working_dir: /App
+  postgres:
+    build:
+      context: .
+      args:
+        UID: 1000
+        GID: 1000
+      dockerfile: postgres.Dockerfile
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+    hostname: postgres
+    user: "1000:1000"
+    #restart: unless-stopped
+    volumes:
+      - ./Data/postgresql:/var/lib/postgresql/data
+#networks:
+#  71walceli_https-proxy:
+#    external: true
