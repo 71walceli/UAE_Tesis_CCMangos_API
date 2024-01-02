@@ -32,7 +32,6 @@ class LecturaAPIView(APIView):
         serializer = LecturaSerializers(lecturas, many=True)
         return Response(serializer.data)
     def post(self, request):
-        print(datetime.now())
         user = request.user
         username = user.username
         print(f"{username} Ha enviado una lectura")
