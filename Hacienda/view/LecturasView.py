@@ -15,7 +15,7 @@ class LecturaAPIView(APIView):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated]
     # Código existente...
-    def get(self, request,*args, **kwargs):
+    def get(self, request):
         # Obteniendo el nombre de usuario del payload del token
         user = request.user
         username = user.username
@@ -33,11 +33,12 @@ class LecturaAPIView(APIView):
         return Response(serializer.data)
     def post(self, request):
         user = request.user
-        username = user.username
-        print(f"{username} Ha enviado una lectura")
-        validate = ValidateLectura(request.data)
-        if validate != "":
-            return Response(validate, status=status.HTTP_400_BAD_REQUEST)
+        #username = user.username
+        #print(f"{username} Ha enviado una lectura")
+        print(request.data)
+        #validate = ValidateLectura(request.data)
+        #if validate != "":
+        #    return Response(validate, status=status.HTTP_400_BAD_REQUEST)
         user = request.user
         username = user.username
         request.data["Usuario"] = username
