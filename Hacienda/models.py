@@ -33,7 +33,7 @@ class Lote(models.Model):
     Usuario = models.TextField(default="Admin",max_length=100, null=True)
 
 class Planta(models.Model):
-    Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True)
+    Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=False)
     Codigo_Planta = models.CharField(max_length=20) 
     Nombre = models.CharField(max_length=40) 
     Circunferencia = models.DecimalField(max_digits=5, decimal_places=2, null=True)
@@ -57,23 +57,20 @@ class GeoCoordenadas(models.Model):
     Activo = models.BooleanField(default=True)
     Usuario = models.TextField(default="Admin",max_length=100, null=True)
 
+class Enfermedad(models.Model):
+    Codigo = models.CharField(max_length=5, blank=False, null=False)
+    Nombre = models.CharField(max_length=30, blank=False, null=False)
 
 class Lectura(models.Model):
     Id_Planta = models.ForeignKey(Planta, on_delete=models.CASCADE, null=True)
-    E1 = models.IntegerField(default=0, blank=True, null=True)
-    E2 = models.IntegerField(default=0, blank=True, null=True)
-    E3 = models.IntegerField(default=0, blank=True, null=True)
-    E4 = models.IntegerField(default=0, blank=True, null=True)
-    E5 = models.IntegerField(default=0, blank=True, null=True)
-    GR1 = models.IntegerField(default=0, blank=True, null=True)
-    GR2 = models.IntegerField(default=0, blank=True, null=True)
-    GR3 = models.IntegerField(default=0, blank=True, null=True)
-    GR4 = models.IntegerField(default=0, blank=True, null=True)
-    GR5 = models.IntegerField(default=0, blank=True, null=True)
-    Monilla = models.IntegerField(default=0, blank=True, null=True)
-    Total = models.IntegerField(default=0, blank=True, null=True)
-    Cherelles = models.IntegerField(default=0, blank=True, null=True)
-    Observacion = models.TextField(max_length=100, null=True, blank=True)
+    
+    CantidadInflorescencias = models.IntegerField(default=0, blank=False, null=False)
+    CantidadFrutonIniciales = models.IntegerField(default=0, blank=False, null=False)
+    CantidadFrutosMaduración = models.IntegerField(default=0, blank=False, null=False)
+    CantidadInflorescenciasPerdidas = models.IntegerField(default=0, blank=False, null=False)
+    Enfermedades = models.ManyToManyField(Enfermedad)
+    Observacion = models.CharField(max_length=256, blank=True, null=True)
+    
     FechaVisita = models.DateTimeField(null=True)
     Activo = models.BooleanField(default=True)
     Usuario = models.TextField(default="Admin",max_length=100, null=True)
