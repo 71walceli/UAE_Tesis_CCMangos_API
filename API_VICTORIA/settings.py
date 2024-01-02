@@ -31,7 +31,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG') == "True"
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = str(config("ALLOWED_HOSTS")).split(",")
 CSRF_COOKIE_DOMAIN = config('SITE')
 SESSION_COOKIE_PATH = '/api/auth/admin/'  # Ruta del panel de administración
 CSRF_COOKIE_PATH = '/api/auth/admin/'  # Ruta del panel de administración
