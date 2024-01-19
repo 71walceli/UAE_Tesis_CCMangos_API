@@ -2,15 +2,14 @@ from datetime import datetime, timedelta
 from enum import Enum
 from django.db import models
 import uuid
-
-# Create your models here.
+from django.contrib.auth.models  import User
 
 
 class Hacienda(models.Model):
     codigo = models.CharField(max_length=10)
     Nombre = models.CharField(max_length=40)
     Activo = models.BooleanField(default=True)
-    Usuario = models.TextField(default="Admin",max_length=100, null=True)
+    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
 class Proyecto(models.Model):
@@ -20,7 +19,7 @@ class Proyecto(models.Model):
     Nombre = models.CharField(max_length=40)
     Densidad = models.IntegerField(null=True)
     Activo = models.BooleanField(default=True)
-    Usuario = models.TextField(default="Admin",max_length=100, null=True)
+    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
 class Lote(models.Model):
@@ -30,7 +29,7 @@ class Lote(models.Model):
     Variedad = models.CharField(max_length=20, null=True)
     Hectareas = models.DecimalField(max_digits=7, decimal_places=3, null=True)
     Activo = models.BooleanField(default=True)
-    Usuario = models.TextField(default="Admin",max_length=100, null=True)
+    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
 class Area(models.Model):
@@ -59,7 +58,7 @@ class Poligono(models.Model):
     Id_Area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, related_name="Poligonos")
     FillColor = models.CharField(max_length=7)
     Activo = models.BooleanField(default=True)
-    Usuario = models.TextField(default="Admin",max_length=100, null=True)
+    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
 class GeoCoordenadas(models.Model):
@@ -67,7 +66,7 @@ class GeoCoordenadas(models.Model):
     lat = models.DecimalField(max_digits=18, decimal_places=16, null=False)
     lng = models.DecimalField(max_digits=19, decimal_places=16, null=False)
     Activo = models.BooleanField(default=True)
-    Usuario = models.TextField(default="Admin",max_length=100, null=True)
+    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 class Enfermedad(models.Model):
     Codigo = models.CharField(max_length=5, blank=False, null=False)
@@ -85,7 +84,7 @@ class Lectura(models.Model):
     
     FechaVisita = models.DateTimeField(null=True)
     Activo = models.BooleanField(default=True)
-    Usuario = models.TextField(default="Admin",max_length=100, null=True)
+    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     GUIDLectura = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     SyncId = models.TextField(max_length=100, null=True)
     FechaRegistro = models.DateTimeField(auto_now_add=True)
@@ -97,4 +96,4 @@ class Produccion(models.Model):
     Fecha = models.DateField(null=False)
     FechaRegistro = models.DateTimeField(auto_now_add=True)
     Activo = models.BooleanField(default=True)
-    Usuario = models.TextField(default="Admin",max_length=100, null=True)
+    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
