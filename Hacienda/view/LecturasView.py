@@ -6,23 +6,20 @@ from Hacienda.serializers import LecturaSerializers
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
-from datetime import datetime, timedelta
+from datetime import datetime
 #http
 from django.http import Http404
 #Import custom validators
-from Hacienda.validators.ValidatorHelper import ValidateLectura
+
+
 class LecturaAPIView(APIView):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated]
     # Código existente...
     def get(self, request):
-        # Obteniendo el nombre de usuario del payload del token
-        user = request.user
-        username = user.username
-        
+    
         id = self.kwargs.get('id')
-       
-        print(f"{username} Ha consultado lecturas")
+      
         if id:
             lecturas = Lectura.objects.filter(Id_Lectura = id)
             serializer = LecturaSerializers(lecturas, many=True)
@@ -33,8 +30,6 @@ class LecturaAPIView(APIView):
         return Response(serializer.data)
     def post(self, request):
         user = request.user
-        #username = user.username
-        #print(f"{username} Ha enviado una lectura")
         print(request.data)
         #validate = ValidateLectura(request.data)
         #if validate != "":

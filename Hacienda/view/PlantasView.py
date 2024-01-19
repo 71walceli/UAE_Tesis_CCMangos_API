@@ -13,12 +13,10 @@ class PlantaAPIView(APIView):
     # Código existente...
     def get(self, request,*args, **kwargs):
         user = request.user
-        username = user.username
-        print(f"{username} Ha cargado plantas")
-        id = self.kwargs.get('id')
         grupos_usuario = user.groups.all()
-        if id: 
-            plantas = Planta.objects.filter(Id_Lote = id , Activo=True)
+        id_area = request.GET.get('id_area')
+        if id_area: 
+            plantas = Planta.objects.filter(Id_Area = id_area, Activo=True)
             serializer = PlantaSerializers(plantas, many=True)
             return Response(serializer.data)
         if any(grupo.name == "Estudiante" for grupo in grupos_usuario):

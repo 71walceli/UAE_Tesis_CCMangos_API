@@ -24,7 +24,7 @@ class Proyecto(models.Model):
 
 
 class Lote(models.Model):
-    Id_Proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, null=True)
+    Id_Proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, null=True, related_name="Lotes")
     Codigo_Lote = models.CharField(max_length=10)
     Nombre = models.CharField(max_length=40)
     Variedad = models.CharField(max_length=20, null=True)
@@ -32,8 +32,19 @@ class Lote(models.Model):
     Activo = models.BooleanField(default=True)
     Usuario = models.TextField(default="Admin",max_length=100, null=True)
 
+
+class Area(models.Model):
+    Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True, related_name="Areas")
+    Codigo_Area = models.CharField(max_length=10)
+    Nombre = models.CharField(max_length=40)
+    Variedad = models.CharField(max_length=20, null=True)
+    Hectareas = models.DecimalField(max_digits=7, decimal_places=3, null=True)
+    Activo = models.BooleanField(default=True)
+    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+
 class Planta(models.Model):
-    Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=False)
+    Id_Area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, related_name="Plantas")
     Codigo_Planta = models.CharField(max_length=20) 
     Nombre = models.CharField(max_length=40) 
     Circunferencia = models.DecimalField(max_digits=5, decimal_places=2, null=True)
@@ -43,8 +54,9 @@ class Planta(models.Model):
     VisibleToStudent = models.BooleanField(null=False,default=True)
 
 
-class Poligono (models.Model):
-    Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True)
+class Poligono(models.Model):
+    Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True, related_name="Poligonos")
+    Id_Area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, related_name="Poligonos")
     FillColor = models.CharField(max_length=7)
     Activo = models.BooleanField(default=True)
     Usuario = models.TextField(default="Admin",max_length=100, null=True)

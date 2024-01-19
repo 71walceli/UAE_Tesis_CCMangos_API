@@ -17,9 +17,6 @@ class GeoLotesView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = request.user
-        username = user.username
-        print(f"{username} Ha cargado Geolotes")
         lote_id = request.query_params.get('lote_id')
 
         if lote_id:
@@ -27,6 +24,7 @@ class GeoLotesView(APIView):
         else:
             poligonos = Poligono.objects.filter(Activo=True)
 
+        # TODO Put this in serializer
         result = []
         for poligono in poligonos:
             poligono_data = PoligonoSerializers(poligono).data

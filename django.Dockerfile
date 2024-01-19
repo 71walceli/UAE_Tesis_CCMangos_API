@@ -12,6 +12,7 @@ RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificate
 RUN groupadd -g ${UID} jupyter
 RUN useradd jupyter -m -u ${UID} -g ${GID}
 
+# TODO Install Anaconda as root
 USER jupyter
 ENV PATH ~/anaconda3/bin:$PATH
 RUN wget https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh -O ~/anaconda.sh

@@ -1,4 +1,5 @@
 from Hacienda.view.LotesView import LoteAPIView
+from Hacienda.view.AreaView import AreaAPIView
 from Hacienda.view.ProyectosView import ProyectoHaciendaAPIView
 from Hacienda.view.GeoLotesView import GeoLotesView
 from Hacienda.view.EnfermedadesView import EnfermedadAPIView

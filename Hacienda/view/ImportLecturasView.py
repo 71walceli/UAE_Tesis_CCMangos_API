@@ -86,6 +86,7 @@ class ImportLecturas(APIView):
                     #row['Observacion'] = row['Observacion'].fillna("")
                     row['Observacion'] = row['Observacion'] if row['Observacion'] !="nan"  else ""
                     # Crea un serializer de usuario pasando los datos del perfil en el contexto
+                    # TODO Modifica extructurar
                     serializer_data = {
                         'Id_Planta': Id_Planta,
                         'FechaVisita': fecha_visita,
