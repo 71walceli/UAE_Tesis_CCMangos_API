@@ -5,6 +5,8 @@ from rest_framework import serializers
 from Hacienda.models import Hacienda
 from Users.models import Perfil
 from rest_framework.exceptions import ErrorDetail
+
+
 class PerfilSerializer(serializers.ModelSerializer):
     class Meta:
         model = Perfil

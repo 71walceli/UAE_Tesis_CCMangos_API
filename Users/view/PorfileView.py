@@ -11,6 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 """Document by SWAGGER"""
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+
+
 class PorfileView(APIView):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -27,6 +29,7 @@ class PorfileView(APIView):
                 'email': request.user.email,
                 'first_name': request.user.first_name,
                 'last_name': request.user.last_name,
+                'id': request.user.pk,
             }
             print(perfil_data['username']+" Is logged")
             return Response(perfil_data, status=status.HTTP_200_OK)

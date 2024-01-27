@@ -6,9 +6,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
-"""Document by SWAGGER"""
+from Users.serializer.UserSerializer import PerfilSerializer 
+
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+
+
 class LoginView(APIView):
     @swagger_auto_schema(
         request_body=openapi.Schema(
@@ -51,6 +54,7 @@ class LoginView(APIView):
             refresh = RefreshToken.for_user(user)
             access_token = refresh.access_token
             print(f"{username} Ha iniciado sesión")
+            user_profiles = Perfil.objects.filter(user=user.pk)[0]
 
             # Retorna los tokens y la lista de nombres de permisos en la respuesta
             return Response({
@@ -58,7 +62,7 @@ class LoginView(APIView):
                 'refresh_token': str(refresh),
                 'permissions': permission_names,
                 'rol': first_group_name,
-                'usurio': username,
+                'usuario': PerfilSerializer(user_profiles).data,
             })
         else:
             print(username + " Credenciales incorrectas ")
