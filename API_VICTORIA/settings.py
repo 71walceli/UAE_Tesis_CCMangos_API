@@ -87,9 +87,11 @@ REST_FRAMEWORK = {
 #CORRs setings
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
+    "OPTIONS",
     "GET",
     "POST",
-    "OPTIONS",
+    "PATCH",
+    "DELETE",
 ]
 
 #if DEBUG:
