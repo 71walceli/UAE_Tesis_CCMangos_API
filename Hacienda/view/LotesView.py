@@ -26,8 +26,13 @@ class LoteAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    def patch(self, request, pk):
-        lote = self.get_object(pk)
+    def patch(self, request, *args, **kwargs):
+        id = request.data.get("id")
+        if not id:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        lote = self.get_object(id)
+        if not lote:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = LoteSerializers(lote, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -38,10 +43,15 @@ class LoteAPIView(APIView):
         try:
             return Lote.objects.get(pk=pk)
         except Lote.DoesNotExist:
-            raise status.HTTP_404_NOT_FOUND
+            return None
 
-    def delete(self, request, id):
+    def delete(self, request, *args, **kwargs):
+        id = request.GET.get("id")
+        if not id:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         lote = self.get_object(id)
+        if not lote:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         lote.Activo = False
         lote.save()
 
