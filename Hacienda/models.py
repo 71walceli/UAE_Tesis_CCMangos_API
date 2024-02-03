@@ -48,8 +48,8 @@ class Planta(models.Model):
     Nombre = models.CharField(max_length=40) 
     Circunferencia = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     Activo = models.BooleanField(default=True)
-    lat = models.DecimalField(max_digits=18, decimal_places=16, null=False)
-    lng = models.DecimalField(max_digits=19, decimal_places=16, null=False)
+    lat = models.DecimalField(max_digits=18, decimal_places=16, null=True)
+    lng = models.DecimalField(max_digits=19, decimal_places=16, null=True)
     VisibleToStudent = models.BooleanField(null=False,default=True)
 
 

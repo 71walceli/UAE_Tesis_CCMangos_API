@@ -10,7 +10,6 @@ from rest_framework.permissions import IsAuthenticated
 class LoteAPIView(APIView):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    # Código existente...
     def get(self, request,*args, **kwargs):
         id_proyecto = self.kwargs.get('id_proyecto')
         if id_proyecto: 

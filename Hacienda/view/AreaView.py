@@ -26,8 +26,13 @@ class AreaAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    def patch(self, request, pk):
-        area = self.get_object(pk)
+    def patch(self, request):
+        id = request.data.get("id")
+        if not id:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        area = self.get_object(id)
+        if not area:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = AreaSerializer(area, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -38,12 +43,17 @@ class AreaAPIView(APIView):
         try:
             return Area.objects.get(pk=pk)
         except Area.DoesNotExist:
-            raise status.HTTP_404_NOT_FOUND
+            return None
 
-    def delete (self, request, id):
+    def delete(self, request, *args, **kwargs):
+        id = request.GET.get("id")
+        if not id:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         area = self.get_object(id)
-        Area.Activo = False
-        Area.save()
+        if not area:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        area.Activo = False
+        area.save()
 
         serializer = AreaSerializer(area)
         return Response(serializer.data)
