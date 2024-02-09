@@ -16,6 +16,8 @@ class AreaSerializer(serializers.ModelSerializer):
         return data
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+        representation["Codigo"] = f"{instance.Id_Lote.Codigo_Lote}_{instance.Codigo_Area}"
+        representation["Codigo_Lote"] = f"{instance.Id_Lote.Codigo_Lote}"
         representation["Plantas"] = [a.id for a in instance.Plantas.filter(Activo = True)]
         representation["Poligonos"] = [a.id for a in instance.Poligonos.filter(Activo = True)]
         return representation
