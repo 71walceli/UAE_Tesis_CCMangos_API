@@ -19,3 +19,8 @@ class PlantaSerializers(serializers.ModelSerializer):
 
         # Verifica si existe una lectura en ese mes y año relacionada con la planta
         return Lectura.objects.filter(Id_Planta=planta, FechaVisita__month=mes_actual, FechaVisita__year=año_actual).exists()
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation["Codigo_Area"] = f"{instance.Id_Area.Id_Lote.Codigo_Lote}_{instance.Id_Area.Codigo_Area}"
+        representation["Codigo"] = f"{representation['Codigo_Area']}_{instance.Codigo_Planta}"
+        return representation
