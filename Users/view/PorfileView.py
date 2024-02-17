@@ -23,7 +23,7 @@ class PorfileView(APIView):
         # Extrae los datos del perfil del usuario actual
         try:
             print(request.user.perfil.cedula)
-            perfil_data = {
+            perfil_data = { 
                 'cedula': request.user.perfil.cedula,
                 'username': request.user.username,
                 'email': request.user.email,
@@ -36,5 +36,3 @@ class PorfileView(APIView):
         except Exception as e:
             print(e)
             return Response(status=status.HTTP_204_NO_CONTENT)
-  
- 

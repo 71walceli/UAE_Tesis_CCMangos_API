@@ -3,6 +3,8 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 #models
 from django.contrib.auth.models import User
 from Users.models import Perfil
+
+
 # Register your models here.
 @admin.register(Perfil)
 class UsuarioAdmin(admin.ModelAdmin):

@@ -9,6 +9,7 @@ class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cedula = models.CharField(max_length=10) 
     created = models.DateField(auto_now=True)
+    # TODO Cambiar a modified
     modifief = models.DateField(auto_now=True)
     Id_Hacienda = models.ForeignKey(Hacienda, on_delete=models.CASCADE, null=True)
 

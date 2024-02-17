@@ -16,11 +16,6 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 class UsuarioList(APIView):
-    """ def get(self, request, format=None):
-        usuarios = Perfil.objects.all()
-        serializer = UserSerializer.PerfilSerializer(usuarios, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK) """
-
     def get(self, request, format=None):
         rol = request.query_params.get('rol', None)
         if rol:
@@ -29,3 +24,23 @@ class UsuarioList(APIView):
             usuarios = User.objects.all()
         serializer = UserSerializer(usuarios, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(self, request):
+        user_data = {
+            "cedula": request.data.get("cedula"),
+            "email": request.data.get("email"),
+            "first_name": request.data.get("first_name"),
+            "last_name": request.data.get("last_name"),
+            "username": request.data.get("username"),
+            "password": request.data.get("username"),
+            "Id_Hacienda": request.data.get("Id_Hacienda"),
+        }
+        if None in user_data.values():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        user_serializer = UserSerializer(data=user_data)
+        if user_serializer.is_valid():
+            user_serializer.create(user_data)
+            return Response(status=status.HTTP_200_OK)
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        

@@ -5,6 +5,7 @@ from rest_framework import serializers
 from Hacienda.models import Hacienda
 from Users.models import Perfil
 from rest_framework.exceptions import ErrorDetail
+from django.db import transaction
 
 
 class PerfilSerializer(serializers.ModelSerializer):
@@ -46,13 +47,13 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'#['username', 'password', 'email', 'first_name', 'last_name']
         extra_kwargs = {'password': {'write_only': True}}
 
+    @transaction.atomic
     def create(self, validated_data):
-        # Crea un usuario
-        perfil_data = self.context.get('perfil_data')  # Obtiene los datos del perfil de contexto
+        perfil_data = self.context.get('perfil_data') or validated_data
+        print("perfil_data = ", perfil_data)
         if perfil_data is None:
-            return serializers.ValidationError(["Cedula",[ErrorDetail(string='La cedula es requerida')]])
+            raise serializers.ValidationError(["Cedula",[ErrorDetail(string='La cedula es requerida')]])
         
-        Id_Hacienda = perfil_data.get('Id_Hacienda')
         # Valida que el número de cédula sea único
         cedula = perfil_data.get('cedula')
         if not self.validar_cedula(cedula):
@@ -62,23 +63,27 @@ class UserSerializer(serializers.ModelSerializer):
         if User.objects.filter(perfil__cedula=cedula).exists():
             raise ValidationError(["Cedula",[ErrorDetail(string='El número de cédula ya está en uso!')]])
         print("Creando usuario...")
-        user = User.objects.create_user(**validated_data)
+        user_data = {
+            "email": perfil_data["email"],
+            "first_name": perfil_data["first_name"],
+            "last_name": perfil_data["last_name"],
+            "username": perfil_data["username"],
+            "password": perfil_data["password"],
+        }
+        user = User.objects.create_user(**user_data)
         print("Usuario creado:", user.username)
-        # Intenta convertir el valor de cadena a una instancia de Hacienda
-        Id_Hacienda_value = perfil_data.get('Id_Hacienda')
-        hacienda_instance = get_object_or_404(Hacienda, id=Id_Hacienda_value)
-        # Quita 'Id_Hacienda' de perfil_data antes de crear la instancia de Perfil
-        perfil_data.pop('Id_Hacienda', None)
-        # Crea un perfil asociado a ese usuario
-        try:
-            print("Creando perfil...")
-            perfil = Perfil.objects.create(user=user, Id_Hacienda=hacienda_instance, **perfil_data)
-            print("Perfil creado:", Perfil.cedula)
-        except Exception as e:
-            user.delete()
-            print("Error al crear el perfil:", e)
-            return serializers.ValidationError(["Cedula",[ErrorDetail(string='Error al crear el Usuario')]])
         
+        perfil_data = {
+            "cedula": perfil_data["cedula"],
+            "Id_Hacienda": get_object_or_404(Hacienda, id=perfil_data["Id_Hacienda"]),
+        }
+        print("Id_Hacienda =", perfil_data["Id_Hacienda"])
+        
+        print("Creando perfil...")
+        Perfil.objects.create(user=user, **perfil_data)
+        print("Perfil creado:", Perfil.cedula)
+        
+        # Crea un perfil asociado a ese usuario
         return user
     
     def to_representation(self, instance):
