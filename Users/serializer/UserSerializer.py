@@ -6,6 +6,7 @@ from Hacienda.models import Hacienda
 from Users.models import Perfil
 from rest_framework.exceptions import ErrorDetail
 from django.db import transaction
+from django.contrib.auth.hashers import make_password
 
 
 class PerfilSerializer(serializers.ModelSerializer):
@@ -68,7 +69,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name": perfil_data["first_name"],
             "last_name": perfil_data["last_name"],
             "username": perfil_data["username"],
-            "password": perfil_data["password"],
+            "password": make_password(perfil_data["password"]),
         }
         user = User.objects.create_user(**user_data)
         print("Usuario creado:", user.username)
@@ -98,8 +99,9 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name": perfil_data.get("first_name", instance.first_name),
             "last_name": perfil_data.get("last_name", instance.last_name),
             "username": perfil_data.get("username", instance.username),
-            "password": perfil_data.get("password", instance.password),
         }
+        if "password" in perfil_data:
+            user_data["password"] = make_password(perfil_data["password"])
         user_id = perfil_data["id"]
         user = User.objects.get(pk=user_id)
         for atributo, valor in user_data.items():
@@ -132,5 +134,6 @@ class UserSerializer(serializers.ModelSerializer):
         if perfil_data is not None:
             for key, value in perfil_data.items():
                 representation[key] = value
+        representation["id"] = instance.id
         return representation
 

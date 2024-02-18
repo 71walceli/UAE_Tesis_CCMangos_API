@@ -15,13 +15,14 @@ from Users.serializer.UserSerializer import UserSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
+
 class UsuarioList(APIView):
     def get(self, request, format=None):
         rol = request.query_params.get('rol', None)
         if rol:
             usuarios = User.objects.filter(groups__name=rol)
         else:
-            usuarios = User.objects.all()
+            usuarios = User.objects.filter(is_active=True)
         serializer = UserSerializer(usuarios, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -50,7 +51,9 @@ class UsuarioList(APIView):
             "id": request.data.get("id"),
             **request.data,
         }
-        if None in user_data.values():
+        if user_data["id"] is None:
+            print("request =", request.data)
+            print("id =", user_data["id"])
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
         usuario_previo = User.objects.get(pk=user_data["id"])
@@ -60,5 +63,14 @@ class UsuarioList(APIView):
             user_serializer.save(**request.data)
             return Response(status=status.HTTP_200_OK)
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        
+
+    def delete(self, request):
+        id = request.GET.get("id")
+        if not id:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        usuario_previo = User.objects.get(pk=id)
+        if not usuario_previo:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        usuario_previo.is_active = False
+        usuario_previo.save()
+        return Response(status=status.HTTP_200_OK)
