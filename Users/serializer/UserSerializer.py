@@ -77,11 +77,51 @@ class UserSerializer(serializers.ModelSerializer):
             "cedula": perfil_data["cedula"],
             "Id_Hacienda": get_object_or_404(Hacienda, id=perfil_data["Id_Hacienda"]),
         }
-        print("Id_Hacienda =", perfil_data["Id_Hacienda"])
         
         print("Creando perfil...")
         Perfil.objects.create(user=user, **perfil_data)
         print("Perfil creado:", Perfil.cedula)
+        
+        # Crea un perfil asociado a ese usuario
+        return user
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        perfil_data = self.context.get('perfil_data') or validated_data
+        print("perfil_data = ", perfil_data)
+        if perfil_data is None:
+            raise serializers.ValidationError(["Cedula",[ErrorDetail(string='La cedula es requerida')]])
+        
+        print("Actualizando usuario...")
+        user_data = {
+            "email": perfil_data.get("email", instance.email),
+            "first_name": perfil_data.get("first_name", instance.first_name),
+            "last_name": perfil_data.get("last_name", instance.last_name),
+            "username": perfil_data.get("username", instance.username),
+            "password": perfil_data.get("password", instance.password),
+        }
+        user_id = perfil_data["id"]
+        user = User.objects.get(pk=user_id)
+        for atributo, valor in user_data.items():
+            setattr(user, atributo, valor)
+        user.save()
+        print("Usuario actualizado:", user.username)
+        
+        perfil_previo = Perfil.objects.get(user_id=user_id)
+        cedula = perfil_data.get('cedula', perfil_previo.cedula)
+        if not self.validar_cedula(cedula):
+            print("El número de cédula es inválido!")
+            raise ValidationError(["Cedula",[ErrorDetail(string='El número de cédula es inválido!')]])
+        
+        perfil_data = {
+            "cedula": perfil_data.get("cedula", perfil_previo.cedula),
+            "Id_Hacienda": get_object_or_404(Hacienda, id=perfil_data.get("Id_Hacienda", perfil_previo.Id_Hacienda)),
+        }
+        print("Actualizando perfil...")
+        for atributo, valor in perfil_data.items():
+            perfil_data[atributo] = valor
+        perfil_previo.save()
+        print("Perfil actualizado:", Perfil.cedula)
         
         # Crea un perfil asociado a ese usuario
         return user
