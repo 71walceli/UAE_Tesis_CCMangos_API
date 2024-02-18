@@ -34,6 +34,7 @@ class UsuarioList(APIView):
             "username": request.data.get("username"),
             "password": request.data.get("username"),
             "Id_Hacienda": request.data.get("Id_Hacienda"),
+            **request.data,
         }
         if None in user_data.values():
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -48,13 +49,6 @@ class UsuarioList(APIView):
         user_data = {
             "id": request.data.get("id"),
             **request.data,
-            #"cedula": request.data.get("cedula"),
-            #"email": request.data.get("email"),
-            #"first_name": request.data.get("first_name"),
-            #"last_name": request.data.get("last_name"),
-            #"username": request.data.get("username"),
-            #"password": request.data.get("username"),
-            #"Id_Hacienda": request.data.get("Id_Hacienda"),
         }
         if None in user_data.values():
             return Response(status=status.HTTP_400_BAD_REQUEST)
