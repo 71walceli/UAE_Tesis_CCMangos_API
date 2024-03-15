@@ -17,10 +17,6 @@ class CrudApiView(APIView):
     
     def serialize_out(self, objects, many=True):
         return self.serializer(objects, many=many).data
-    """ 
-    def serialize_in(self, object, data=None, partial=True):
-        return self.serializer(object, data=data or {}, partial=partial)
-     """
     
     def get_object(self, pk):
         try:
