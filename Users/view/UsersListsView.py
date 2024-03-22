@@ -17,6 +17,9 @@ from drf_yasg import openapi
 
 
 class UsuarioList(APIView):
+    authentication_classes = [SessionAuthentication, JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, format=None):
         rol = request.query_params.get('rol', None)
         if rol:

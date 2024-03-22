@@ -13,7 +13,8 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 class PermisionsList(APIView):
-    """vjsdbfvjbf"""
+    authentication_classes = [SessionAuthentication, JWTAuthentication]
+    permission_classes = [IsAuthenticated]
    
     #permission_classes = [permissions.IsAuthenticated]
 

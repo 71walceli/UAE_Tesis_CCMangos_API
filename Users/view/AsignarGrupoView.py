@@ -5,8 +5,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User, Group
 from Users.serializers import AsignacionGrupoSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class AsignarGrupoView(APIView):
+    authentication_classes = [SessionAuthentication, JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     def post(self, request, format=None):
         serializer = AsignacionGrupoSerializer(data=request.data)
         if serializer.is_valid():

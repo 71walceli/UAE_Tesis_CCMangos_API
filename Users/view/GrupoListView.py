@@ -18,6 +18,9 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 class GrupoList(APIView):
+    authentication_classes = [SessionAuthentication, JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, format=None):
         grupos = Group.objects.all()
         serializer = GroupSerializer(grupos, many=True)

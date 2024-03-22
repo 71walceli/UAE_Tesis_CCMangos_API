@@ -5,13 +5,17 @@ from django.contrib.auth.models  import User
 from Users.models import Perfil
 from Users.serializer.UserSerializer import UserSerializer
 import pandas as pd
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 """Document by SWAGGER"""
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 class ImportUsers(APIView):
-    
+    authentication_classes = [SessionAuthentication, JWTAuthentication]
+    permission_classes = [IsAuthenticated]    
     
     def validate_row(self,row, index, errors,headers):
         has_error = False
