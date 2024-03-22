@@ -93,7 +93,7 @@ class Lectura(models.Model):
 class Produccion(models.Model):
     Id_Area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True)
     Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True)
-    Cantidad = models.DecimalField(max_digits=8, decimal_places=4, null=False)
+    Cantidad = models.DecimalField(max_digits=8, decimal_places=2, null=False)
     Fecha = models.DateField(null=False)
     FechaRegistro = models.DateTimeField(auto_now_add=True)
     Activo = models.BooleanField(default=True)
