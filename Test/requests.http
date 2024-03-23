@@ -15,3 +15,7 @@ Content-Type: application/json
 GET {{HOST}}/weather/data
 Authorization: Bearer {{login.response.body.$.access_token}}
 
+###
+GET {{HOST}}/geolotes
+Authorization: Bearer {{login.response.body.$.access_token}}
+
