@@ -27,16 +27,11 @@ class GeoLotesView(APIView):
         # TODO Put this in serializer
         result = []
         for poligono in poligonos:
+            if not request.user.is_superuser and not getattr(poligono.Id_Area, "Activo", True):
+                continue
             poligono_data = PoligonoSerializers(poligono).data
-            geocoordenadas = GeoCoordenadas.objects.filter(
-                Id_Poligono=poligono.id, Activo =True)
-            geocoordenadas_data = GeoCoordenadasSerializers(
-                geocoordenadas, many=True).data
-            # Obtener el nombre del lote correspondiente usando la relación ForeignKey
-            nombre_lote = poligono.Id_Lote.Nombre if poligono.Id_Lote else None
-            codigo_lote = poligono.Id_Lote.Codigo_Lote if poligono.Id_Lote else None
-            poligono_data['Lote'] = nombre_lote
-            poligono_data['CodigoLote'] = codigo_lote
+            geocoordenadas = GeoCoordenadas.objects.filter(Id_Poligono=poligono.id, Activo =True)
+            geocoordenadas_data = GeoCoordenadasSerializers(geocoordenadas, many=True).data
             poligono_data['geocoordenadas'] = geocoordenadas_data
             result.append(poligono_data)
 
