@@ -1,14 +1,15 @@
 @HOST = http://django:8080/api
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjo0ODYzNjQzMDM3LCJpYXQiOjE3MTAwNDMwMzcsImp0aSI6ImM5ZjhhMjViNWNmYjQ3OGI4OWVjMTZjZDE0MWZmZWMzIiwidXNlcl9pZCI6MX0.dr68iUkBsbnmwMyBCj9Qq61p0ZoeLQ4ASX6nj2vI8Uw
 
 ###
 # @name login
+# @prompt username
+# @prompt password
 POST {{HOST}}/auth/login/
 Content-Type: application/json
 
 {
-  "username": "walceli",
-  "password": "p4s5w0rD"
+  "username": "{{username}}",
+  "password": "{{password}}"
 }
 
 ###
