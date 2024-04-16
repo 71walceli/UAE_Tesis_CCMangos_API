@@ -8,10 +8,7 @@ from ..models import PlantaFoto
 
 
 class PlantasFotosView(APIView):
-    parser_classes = (
-        #FileUploadParser, 
-        MultiPartParser, 
-    )
+    parser_classes = (MultiPartParser, )
 
     def put(self, request):
         file = request.FILES.get("file")
