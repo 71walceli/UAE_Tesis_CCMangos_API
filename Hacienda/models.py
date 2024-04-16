@@ -3,6 +3,7 @@ from enum import Enum
 from django.db import models
 import uuid
 from django.contrib.auth.models  import User
+from django.core.files.storage import FileSystemStorage  
 
 
 class Hacienda(models.Model):
@@ -53,6 +54,10 @@ class Planta(models.Model):
     VisibleToStudent = models.BooleanField(null=False,default=True)
 
 
+class PlantaFoto(models.Model):
+    uri = models.FileField(storage=FileSystemStorage("/Uploads/Plantas/Fotos"))
+
+
 class Poligono(models.Model):
     Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True, related_name="Poligonos")
     Id_Area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, related_name="Poligonos")
@@ -68,9 +73,11 @@ class GeoCoordenadas(models.Model):
     Activo = models.BooleanField(default=True)
     Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
+
 class Enfermedad(models.Model):
     Codigo = models.CharField(max_length=5, blank=False, null=False)
     Nombre = models.CharField(max_length=30, blank=False, null=False)
+
 
 class Lectura(models.Model):
     Id_Planta = models.ForeignKey(Planta, on_delete=models.CASCADE, null=True)
