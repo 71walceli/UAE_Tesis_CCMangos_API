@@ -55,4 +55,4 @@ class SyncView(APIView):
             return Response(f"Se han sincronizado {registros_sincronizados} registros exitosamente!", status=status.HTTP_200_OK)
         
         return Response("Los datos ya se han sincronizado!", status=status.HTTP_200_OK)
-        
+

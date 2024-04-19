@@ -31,14 +31,6 @@ Authorization: Bearer {{login.response.body.$.access_token}}
 ###
 PUT {{HOST}}/plantas/fotos/upload/
 Authorization: Bearer {{login.response.body.$.access_token}}
-Content-Disposition: form-data; name="file"; filename="20240412-165539_A1CZ_L1_F1_P6_LA.jpg"
-
-< /home/wceli/Pictures/Screenshots/Screenshot_20240409_124452.png
-
-
-###
-PUT {{HOST}}/plantas/fotos/upload/
-Authorization: Bearer {{login.response.body.$.access_token}}
 Content-Type: multipart/form-data; boundary=elAmor
 
 --elAmor

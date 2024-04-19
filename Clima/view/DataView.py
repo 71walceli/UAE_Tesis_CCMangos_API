@@ -9,10 +9,6 @@ from rest_framework.permissions import IsAuthenticated
 """Document by SWAGGER"""
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-"""
-Arable data
-"""
-from Clima.Arable.Auth import GetData, Login, BuidlSerializer
 
 
 class DataView(APIView):
