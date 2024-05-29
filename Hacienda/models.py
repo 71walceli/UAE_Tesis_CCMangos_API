@@ -36,7 +36,7 @@ class Lote(models.Model):
 class Area(models.Model):
     Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True, related_name="Areas")
     Codigo_Area = models.CharField(max_length=10)
-    Nombre = models.CharField(max_length=40)
+    Nombre = models.CharField(max_length=40, blank=True, null=True)
     Variedad = models.CharField(max_length=20, null=True)
     Hectareas = models.DecimalField(max_digits=7, decimal_places=3, null=True)
     Activo = models.BooleanField(default=True)
@@ -46,7 +46,7 @@ class Area(models.Model):
 class Planta(models.Model):
     Id_Area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, related_name="Plantas")
     Codigo_Planta = models.CharField(max_length=20) 
-    Nombre = models.CharField(max_length=40) 
+    Nombre = models.CharField(max_length=40, blank=True, null=True)
     Circunferencia = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     Activo = models.BooleanField(default=True)
     lat = models.DecimalField(max_digits=18, decimal_places=16, null=True)
@@ -95,6 +95,10 @@ class Lectura(models.Model):
     GUIDLectura = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     SyncId = models.TextField(max_length=100, null=True)
     FechaRegistro = models.DateTimeField(auto_now_add=True)
+    
+    Coord_x = models.FloatField(blank=True, null=True)
+    Coord_y = models.FloatField(blank=True, null=True)
+    Coord_precision = models.FloatField(blank=True, null=True)
 
 
 class Produccion(models.Model):
