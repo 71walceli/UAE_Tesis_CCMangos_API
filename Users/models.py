@@ -1,5 +1,5 @@
 """Users models"""
-from django.contrib.auth.models  import User
+from django.contrib.auth.models  import User, Group
 from django.db import models
 
 from Hacienda.models import Hacienda
@@ -12,6 +12,8 @@ class Perfil(models.Model):
     # TODO Cambiar a modified
     modifief = models.DateField(auto_now=True)
     Id_Hacienda = models.ForeignKey(Hacienda, on_delete=models.CASCADE, null=True)
+
+    roles = models.ManyToManyField(Group)
 
     def __str__(self):
         return self.user.username

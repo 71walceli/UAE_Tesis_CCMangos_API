@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.forms import ValidationError
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
@@ -40,6 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
         digito_verificador = (10 - (suma_total % 10)) % 10
 
         # Comparar el dígito verificador calculado con el dígito verificador proporcionado
+        # TODO Validar roles
         return digito_verificador == int(cedula[-1])
     
     perfil = PerfilSerializer(required=False)
@@ -51,7 +52,8 @@ class UserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         perfil_data = self.context.get('perfil_data') or validated_data
-        print("perfil_data = ", perfil_data)
+        roles = perfil_data["roles"]
+        print("perfil_data",perfil_data)
         if perfil_data is None:
             raise serializers.ValidationError(["Cedula",[ErrorDetail(string='La cedula es requerida')]])
         
@@ -77,11 +79,13 @@ class UserSerializer(serializers.ModelSerializer):
         perfil_data = {
             "cedula": perfil_data["cedula"],
             "Id_Hacienda": get_object_or_404(Hacienda, id=perfil_data["Id_Hacienda"]),
+            #"roles": [Group.objects.get(pk=id) for id in perfil_data["roles"]]
         }
+        print("perfil_data",perfil_data)
         
-        print("Creando perfil...")
-        Perfil.objects.create(user=user, **perfil_data)
-        print("Perfil creado:", Perfil.cedula)
+        perfil = Perfil.objects.create(user=user, **perfil_data)
+        perfil.roles.set(roles)
+        perfil.save()
         
         # Crea un perfil asociado a ese usuario
         return user
@@ -89,15 +93,17 @@ class UserSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         perfil_data = self.context.get('perfil_data') or validated_data
+        roles = perfil_data.get("roles")
         print("perfil_data = ", perfil_data)
         if perfil_data is None:
             raise serializers.ValidationError(["Cedula",[ErrorDetail(string='La cedula es requerida')]])
         
         print("Actualizando usuario...")
         user_data = {
-            "email": perfil_data.get("email", instance.email),
+            # TODO Permitir cambiar cédulas
             "first_name": perfil_data.get("first_name", instance.first_name),
             "last_name": perfil_data.get("last_name", instance.last_name),
+            "email": perfil_data.get("email", instance.email),
             "username": perfil_data.get("username", instance.username),
         }
         if "password" in perfil_data:
@@ -122,6 +128,8 @@ class UserSerializer(serializers.ModelSerializer):
         print("Actualizando perfil...")
         for atributo, valor in perfil_data.items():
             perfil_data[atributo] = valor
+        if roles:
+            perfil_previo.roles.set(roles)
         perfil_previo.save()
         print("Perfil actualizado:", Perfil.cedula)
         

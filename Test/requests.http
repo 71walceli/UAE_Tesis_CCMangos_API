@@ -40,3 +40,24 @@ Content-Disposition: form-data; name="file"; filename="20240412-165539_A1CZ_L1_F
 < /home/wceli/Pictures/Screenshots/Screenshot_20240409_124452.png
 --elAmor--
 
+###
+GET {{HOST}}/auth/users
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+###
+POST {{HOST}}/auth/users
+Authorization: Bearer {{login.response.body.$.access_token}}
+Content-Type: application/json
+
+{
+  //"id": 23,
+  "cedula": "1324654688",
+  "first_name": "Walter",
+  "last_name": "Obrero",
+  "email": "walter.Obrero@gmail.com",
+  "username": "walter.Obrero",
+  "password": "Uae*2024--wAcV",
+  "roles": [2],
+  "Id_Hacienda": 1
+}
+
