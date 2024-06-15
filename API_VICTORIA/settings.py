@@ -45,7 +45,6 @@ if EXTERNAL_HOSTNAME:
     EXTERNAL_HOSTNAME = EXTERNAL_HOSTNAME.split(",")
     for HOST in EXTERNAL_HOSTNAME:
         ALLOWED_HOSTS.append(HOST)
-print(ALLOWED_HOSTS)
 # Application definition
 INSTALLED_APPS = [
     'corsheaders',
@@ -94,8 +93,8 @@ CORS_ALLOW_METHODS = [
     "DELETE",
 ]
 
-#if DEBUG:
-CORS_ALLOW_ALL_ORIGINS = False
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
 origins=config("CORS_ALLOWED_ORIGINS")
 if origins:
     CORS_ALLOWED_ORIGINS = origins.split(",")
