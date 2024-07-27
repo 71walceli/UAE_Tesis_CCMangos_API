@@ -1,4 +1,4 @@
-@HOST = http://django:8080/api
+@HOST = http://192.168.67.245:8080/api
 
 ###
 # @name login
@@ -22,6 +22,10 @@ Authorization: Bearer {{login.response.body.$.access_token}}
 
 ###
 GET {{HOST}}/areas
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+###
+GET {{HOST}}/areas?id=L01TEST
 Authorization: Bearer {{login.response.body.$.access_token}}
 
 ###
@@ -51,13 +55,48 @@ Content-Type: application/json
 
 {
   //"id": 23,
-  "cedula": "1324654688",
-  "first_name": "Walter",
-  "last_name": "Obrero",
-  "email": "walter.Obrero@gmail.com",
-  "username": "walter.Obrero",
-  "password": "Uae*2024--wAcV",
-  "roles": [2],
+  "cedula": "2222222222",
+  "first_name": "Usuario",
+  "last_name": "API",
+  "email": "api@example.com",
+  "username": "predictive-api",
+  "password": "vCT60j69h2mwoAcx0SeEi3rm78r2zW1MyY6ZFXV8K88KC3fgkh0pux5PshruCZWaS",
+  "roles": [1,2],
   "Id_Hacienda": 1
 }
 
+###
+GET {{HOST}}/misc/verificar_existencia?entidad=lote&codigo=A1CZ
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+###
+GET {{HOST}}/misc/verificar_existencia?entidad=planta&codigo=F1_P1
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+###
+DELETE {{HOST}}/weather/data/?start=2023-01-01T00:00:00.999Z&end=2024-07-31T04:59:59.999Z
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+###
+POST {{HOST}}/weather/data/
+Authorization: Bearer {{login.response.body.$.access_token}}
+Content-Type: multipart/form-data; boundary=elAmor
+
+--elAmor
+Content-Type: text/csv
+Content-Disposition: form-data; name="file"; filename="datos.csv"
+
+< ../../Data/Datos meteorológicos 2023.csv
+--elAmor--
+
+###
+GET {{HOST}}/predicciones/clima
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+###
+GET {{HOST}}/predicciones/cosechas
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+###
+GET {{HOST}}/predicciones/
+Authorization: Bearer {{login.response.body.$.access_token}}
