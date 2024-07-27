@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from ..models import Lote
-from .PoligonoSerializer import PoligonoSerializers
+from .PoligonoSerializer import PoligonoSerializer
 from .AreaSerializer import AreaSerializer
-class LoteSerializers(serializers.ModelSerializer):
+
+
+class LoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lote
         fields = '__all__'

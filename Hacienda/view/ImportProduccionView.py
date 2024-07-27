@@ -7,7 +7,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 """Models and Serializers"""
 from Hacienda.models import Produccion
-from Hacienda.serializers import ProduccionSerializers
+from Hacienda.serializers import ProduccionSerializer
 import pandas as pd
 from datetime import datetime
 import uuid
@@ -87,7 +87,7 @@ class ImportProduccion(APIView):
                         'Usuario': str(username),
                     }
                     print(serializer_data)
-                    serializer = ProduccionSerializers(data=serializer_data)
+                    serializer = ProduccionSerializer(data=serializer_data)
                     #print(serializer)
                     if serializer.is_valid():
                         serializer.save()

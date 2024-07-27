@@ -7,7 +7,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 """Models and Serializers"""
 from Hacienda.models import Planta
-from Hacienda.serializers import PlantaSerializers
+from Hacienda.serializers import PlantaSerializer
 import pandas as pd
 from datetime import datetime
 import uuid
@@ -79,10 +79,10 @@ class ImportPlantasView(APIView):
                         'lng': row['Longitud'],
                     }
                     if Id_Planta is None:
-                        serializer = PlantaSerializers(data=serializer_data)
+                        serializer = PlantaSerializer(data=serializer_data)
                     else:
                         Plantaxd = Planta.objects.get(id=Id_Planta)
-                        serializer = PlantaSerializers(Plantaxd, data=serializer_data, partial=True)
+                        serializer = PlantaSerializer(Plantaxd, data=serializer_data, partial=True)
 
                     if serializer.is_valid():
                         serializer.save()

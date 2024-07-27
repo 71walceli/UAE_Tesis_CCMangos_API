@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from Hacienda.models import Enfermedad
+
+
 class EnfermedadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enfermedad

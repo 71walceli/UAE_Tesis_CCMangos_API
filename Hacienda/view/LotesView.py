@@ -2,7 +2,7 @@ from Hacienda.models import Lote, Area
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Hacienda.serializers import LoteSerializers
+from Hacienda.serializers import LoteSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -14,7 +14,11 @@ class LoteAPIView(CrudApiView):
     permission_classes = [IsAuthenticated]
     
     def __init__(self):
-        super().__init__(Lote, LoteSerializers)
+        parents = [
+            "Id_Proyecto_id",
+            "Id_Hacienda_id",
+        ]
+        super().__init__(Lote, LoteSerializer, parents)
 
     def get(self, request, *args, **kwargs):
         id_proyecto = request.GET.get('id_proyecto')

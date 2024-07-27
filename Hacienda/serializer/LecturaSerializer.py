@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from Hacienda.models import Lectura
-class LecturaSerializers(serializers.ModelSerializer):
+
+
+class LecturaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lectura
         fields = ('__all__')

@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from Hacienda.models import Poligono, GeoCoordenadas, Lote
-from Hacienda.serializers import PoligonoSerializers, GeoCoordenadasSerializers
+from Hacienda.serializers import PoligonoSerializer, GeoCoordenadasSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -29,9 +29,9 @@ class GeoLotesView(APIView):
         for poligono in poligonos:
             if not request.user.is_superuser and not getattr(poligono.Id_Area, "Activo", True):
                 continue
-            poligono_data = PoligonoSerializers(poligono).data
+            poligono_data = PoligonoSerializer(poligono).data
             geocoordenadas = GeoCoordenadas.objects.filter(Id_Poligono=poligono.id, Activo =True)
-            geocoordenadas_data = GeoCoordenadasSerializers(geocoordenadas, many=True).data
+            geocoordenadas_data = GeoCoordenadasSerializer(geocoordenadas, many=True).data
             poligono_data['geocoordenadas'] = geocoordenadas_data
             result.append(poligono_data)
 
@@ -73,13 +73,13 @@ class GeoLotesView(APIView):
         if Poligono.objects.filter(Id_Lote=lote_id, Activo=True).exists():          
             return Response("Ya existe un polígono registrado para este lote.", status=status.HTTP_400_BAD_REQUEST)
 
-        poligono_serializer = PoligonoSerializers(
+        poligono_serializer = PoligonoSerializer(
             data=request.data)
         if not poligono_serializer.is_valid():
             return Response(poligono_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         geocoordenadas_data = request.data.get('geocoordenadas', [])
-        geocoordenadas_serializers = [GeoCoordenadasSerializers(
+        geocoordenadas_serializers = [GeoCoordenadasSerializer(
             data=data) for data in geocoordenadas_data]
 
         for serializer in geocoordenadas_serializers:

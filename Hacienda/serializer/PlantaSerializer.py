@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from Hacienda.models import Planta,Lectura
 
 
-class PlantaSerializers(serializers.ModelSerializer):
+class PlantaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planta
         fields = ('__all__')

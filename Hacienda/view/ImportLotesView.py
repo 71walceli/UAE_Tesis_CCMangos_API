@@ -7,7 +7,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 """Models and Serializers"""
 from Hacienda.models import Lote, Proyecto
-from Hacienda.serializers import LoteSerializers
+from Hacienda.serializers import LoteSerializer
 import pandas as pd
 from datetime import datetime
 import uuid
@@ -83,10 +83,10 @@ class ImportLotesView(APIView):
                     }
                     print(serializer_data)
                     if Id_Lote is None:
-                        serializer = LoteSerializers(data=serializer_data)
+                        serializer = LoteSerializer(data=serializer_data)
                     else:
                         lote = Proyecto.objects.get(id=Id_Lote)
-                        serializer = LoteSerializers(lote, data=serializer_data, partial=True)
+                        serializer = LoteSerializer(lote, data=serializer_data, partial=True)
                     if serializer.is_valid():
                         serializer.save()
                         print("Lote Actualizado con exito!")

@@ -2,7 +2,7 @@ from Hacienda.models import Lectura
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Hacienda.serializers import LecturaSerializers
+from Hacienda.serializers import LecturaSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -18,10 +18,10 @@ class LecturaAPIView(APIView):
         id = self.kwargs.get('id')
         if id:
             lecturas = Lectura.objects.filter(Id_Lectura = id)
-            serializer = LecturaSerializers(lecturas, many=True)
+            serializer = LecturaSerializer(lecturas, many=True)
             return Response(serializer.data)
         lecturas = Lectura.objects.filter(Activo = True)
-        serializer = LecturaSerializers(lecturas, many=True)
+        serializer = LecturaSerializer(lecturas, many=True)
         return Response(serializer.data)
     def post(self, request):
         user = request.user
@@ -30,7 +30,7 @@ class LecturaAPIView(APIView):
         username = user.username
         request.data["Usuario"] = username
         
-        serializer = LecturaSerializers(data=request.data)
+        serializer = LecturaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             print(f"{username} Ha registrado una lectura")
@@ -50,5 +50,5 @@ class LecturaAPIView(APIView):
         lectura.Activo = False
         lectura.save()
 
-        serializer = LecturaSerializers(lectura)
+        serializer = LecturaSerializer(lectura)
         return Response(serializer.data)

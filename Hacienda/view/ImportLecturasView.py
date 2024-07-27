@@ -7,7 +7,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 """Models and Serializers"""
 from Hacienda.models import Lectura
-from Hacienda.serializers import LecturaSerializers
+from Hacienda.serializers import LecturaSerializer
 import pandas as pd
 from datetime import datetime
 import uuid
@@ -112,7 +112,7 @@ class ImportLecturas(APIView):
                     validate = ValidateLectura(serializer_data)
                     if validate != "":
                         return Response(validate, status=status.HTTP_400_BAD_REQUEST)
-                    serializer = LecturaSerializers(data=serializer_data)
+                    serializer = LecturaSerializer(data=serializer_data)
                     #print(serializer)
                     if serializer.is_valid():
                         serializer.save()

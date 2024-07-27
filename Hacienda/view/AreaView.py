@@ -14,7 +14,12 @@ class AreaAPIView(CrudApiView):
     permission_classes = [IsAuthenticated]
     
     def __init__(self):
-        super().__init__(Area, AreaSerializer)
+        parents = [
+            "Id_Lote_id",
+            "Id_Proyecto_id",
+            "Id_Hacienda_id",
+        ]
+        super().__init__(Area, AreaSerializer, parents)
     
     def get(self, request, *args, **kwargs):
         id_lotes = self.kwargs.get('id_lotes')

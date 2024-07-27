@@ -10,7 +10,10 @@ class CrudApiView(APIView):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated]
     
-    def __init__(self, model, serializer):
+    def __init__(self, model, serializer, parents=None):
+        if not parents:
+            parents = []
+        self.parents = parents
         super(APIView)
         self.model = model
         self.serializer = serializer
@@ -28,6 +31,10 @@ class CrudApiView(APIView):
         filters = kwargs.get("filters", {})
         many = kwargs.get("many", True)
         objects = self.model.objects.filter(Activo=True, **filters)
+        for predicate in (f'{"__".join(l for l in self.parents[0:i])}__Activo'
+            for i in range(1, len(self.parents)+1)
+        ): 
+            objects = objects.exclude(**{predicate: False})
         return Response(self.serialize_out(objects, many=many))
 
     def post(self, request):

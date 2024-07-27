@@ -1,6 +1,6 @@
 from .models import Hacienda, Proyecto, Lectura
 from rest_framework import viewsets, permissions
-from .serializers import HaciendaSerializers, ProyectoSerializers, LecturaSerializers
+from .serializers import HaciendaSerializer, ProyectoSerializer, LecturaSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 class HaciendaViewSet(viewsets.ModelViewSet):
     queryset = Hacienda.objects.filter(Activo=True)
     permission_classes = [permissions.AllowAny]
-    serializer_class = HaciendaSerializers
+    serializer_class = HaciendaSerializer
     def get_queryset(self):
         queryset = super().get_queryset()
         codigo = self.request.query_params.get('cod')
@@ -20,7 +20,7 @@ class HaciendaViewSet(viewsets.ModelViewSet):
 class ProyectoViewSet(viewsets.ModelViewSet):
     queryset = Proyecto.objects.filter(Activo=True)
     permission_classes = [permissions.AllowAny]
-    serializer_class = ProyectoSerializers
+    serializer_class = ProyectoSerializer
 
     def get_queryset(self):
         queryset = super().get_queryset()

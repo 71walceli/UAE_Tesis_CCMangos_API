@@ -2,10 +2,11 @@ from Hacienda.models import Produccion
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Hacienda.serializers import ProduccionSerializers
+from Hacienda.serializers import ProduccionSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+
 
 class EstadisticasView(APIView):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
@@ -18,17 +19,17 @@ class EstadisticasView(APIView):
         id = self.kwargs.get('id')
         if id: 
             Produccions = Produccion.objects.filter(Id_Lote = id , Activo=True)
-            serializer = ProduccionSerializers(Produccions, many=True)
+            serializer = ProduccionSerializer(Produccions, many=True)
             return Response(serializer.data)
 
         produccion = Produccion.objects.filter(Activo=True)
-        serializer = ProduccionSerializers(produccion, many=True)
+        serializer = ProduccionSerializer(produccion, many=True)
         return Response(serializer.data)
     def post(self, request):
         user = request.user
         username = user.username
         print(f"{username} Ha registrado una Produccion")
-        serializer = ProduccionSerializers(data=request.data)
+        serializer = ProduccionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -36,7 +37,7 @@ class EstadisticasView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def patch(self, request, pk):
         Produccion = self.get_object(pk)
-        serializer = ProduccionSerializers(Produccion, data=request.data, partial=True)
+        serializer = ProduccionSerializer(Produccion, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -53,5 +54,5 @@ class EstadisticasView(APIView):
         Produccion.Activo = False
         Produccion.save()
 
-        serializer = ProduccionSerializers(Produccion)
+        serializer = ProduccionSerializer(Produccion)
         return Response(serializer.data)

@@ -2,7 +2,7 @@ from Hacienda.models import Planta
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from Hacienda.serializers import PlantaSerializers
+from Hacienda.serializers import PlantaSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -14,7 +14,13 @@ class PlantaAPIView(CrudApiView):
     permission_classes = [IsAuthenticated]
     
     def __init__(self):
-        super().__init__(Planta, PlantaSerializers)
+        parents = [
+            "Id_Area_id",
+            "Id_Lote_id",
+            "Id_Proyecto_id",
+            "Id_Hacienda_id",
+        ]
+        super().__init__(Planta, PlantaSerializer, parents) 
     
     def get(self, request, *args, **kwargs):
         grupos_usuario = request.user.groups.all()
