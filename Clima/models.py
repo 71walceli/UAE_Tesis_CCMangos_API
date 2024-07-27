@@ -37,8 +37,8 @@ class Daily_Indicadores(models.Model):
     Wind_Speed_Max = models.DecimalField(max_digits=5, decimal_places=2,null=True)
     
     #Sea Level Pressure
-    Atmospheric_Pressure_Max = models.DecimalField(max_digits=5, decimal_places=2,null=True)
-    Atmospheric_Pressure_Min = models.DecimalField(max_digits=5, decimal_places=2,null=True)
+    Atmospheric_Pressure_Max = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True)
+    Atmospheric_Pressure_Min = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True)
     
     Activo = models.BooleanField(default=True)
     Usuario = models.TextField(default="Arable",max_length=100, null=True)
