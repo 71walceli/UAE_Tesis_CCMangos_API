@@ -23,11 +23,19 @@ class Proyecto(models.Model):
     Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
+class Variedad(models.Model):
+    Codigo = models.CharField(max_length=5, blank=False, null=False)
+    Nombre = models.CharField(max_length=30, blank=False, null=False)
+    MaximaCosechaHectareaAnual = models.DecimalField(max_digits=8, decimal_places=2, null=False)
+    MinimaCosechaHectareaAnual = models.DecimalField(max_digits=8, decimal_places=2, null=False) 
+    Activo = models.BooleanField(default=True)
+
+
+# TODO Cambiar nombres de áreas y lotes
 class Lote(models.Model):
     Id_Proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, null=True, related_name="Lotes")
     Codigo_Lote = models.CharField(max_length=10)
     Nombre = models.CharField(max_length=40)
-    Variedad = models.CharField(max_length=20, null=True)
     Hectareas = models.DecimalField(max_digits=7, decimal_places=3, null=True)
     Activo = models.BooleanField(default=True)
     Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -37,7 +45,7 @@ class Area(models.Model):
     Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True, related_name="Areas")
     Codigo_Area = models.CharField(max_length=10)
     Nombre = models.CharField(max_length=40, blank=True, null=True)
-    Variedad = models.CharField(max_length=20, null=True)
+    Variedad = models.ForeignKey(Variedad, null=False, on_delete=models.CASCADE)
     Hectareas = models.DecimalField(max_digits=7, decimal_places=3, null=True)
     Activo = models.BooleanField(default=True)
     Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -77,6 +85,7 @@ class GeoCoordenadas(models.Model):
 class Enfermedad(models.Model):
     Codigo = models.CharField(max_length=5, blank=False, null=False)
     Nombre = models.CharField(max_length=30, blank=False, null=False)
+    Activo = models.BooleanField(default=True)
 
 
 class Lectura(models.Model):
