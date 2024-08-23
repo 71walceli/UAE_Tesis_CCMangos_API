@@ -10,45 +10,20 @@ from datetime import datetime
 #http
 from django.http import Http404
 
+from .CrudApiView import CrudApiView
 
-class LecturaAPIView(APIView):
+
+class LecturaAPIView(CrudApiView):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    def get(self, request):
-        id = self.kwargs.get('id')
-        if id:
-            lecturas = Lectura.objects.filter(Id_Lectura = id)
-            serializer = LecturaSerializer(lecturas, many=True)
-            return Response(serializer.data)
-        lecturas = Lectura.objects.filter(Activo = True)
-        serializer = LecturaSerializer(lecturas, many=True)
-        return Response(serializer.data)
-    def post(self, request):
-        user = request.user
-        print(request.data)
-        user = request.user
-        username = user.username
-        request.data["Usuario"] = username
-        
-        serializer = LecturaSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            print(f"{username} Ha registrado una lectura")
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def get_object(self, pk):
-        try:
-            return Lectura.objects.get(pk=pk)
-        except Lectura.DoesNotExist:
-            raise Http404
-
-    def delete (self, request):
-        id = request.GET.get("id", 0)
-        lectura = self.get_object(id)
-        lectura.Activo = False
-        lectura.save()
-
-        serializer = LecturaSerializer(lectura)
-        return Response(serializer.data)
+    
+    def __init__(self):
+        parents = [
+            "Id_Planta_id",
+            "Id_Area_id",
+            "Id_Lote_id",
+            "Id_Proyecto_id",
+            "Id_Hacienda_id",
+        ]
+        super().__init__(Lectura, LecturaSerializer, parents)
+   

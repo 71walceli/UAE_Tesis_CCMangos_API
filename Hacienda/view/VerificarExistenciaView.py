@@ -11,6 +11,11 @@ import Hacienda.models as models
 import Hacienda.serializers as serializers
 
 
+parents = {
+    "Area": "Id_Lote_id",
+    "Produccion": "Id_Area_id",
+    "Planta": "Id_Area_id",
+}
 class VerificarExistenciaAPIView(APIView):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -40,6 +45,10 @@ class VerificarExistenciaAPIView(APIView):
             f"Codigo_{entidad}": codigo,
             "Activo": True,
         }
+        parent_id = request.GET.get("parent_id")
+        if parent_id:
+            filters[parents[entidad]] = int(parent_id)
+        print("filters =",filters)
         objects = Entidad.objects.filter(**filters)
         found = objects.exists()
         response = {

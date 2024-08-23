@@ -6,6 +6,7 @@ from Hacienda.serializers import LoteSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+
 from .CrudApiView import CrudApiView
 
 

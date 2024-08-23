@@ -38,7 +38,7 @@ class Lote(models.Model):
     Nombre = models.CharField(max_length=40)
     Hectareas = models.DecimalField(max_digits=7, decimal_places=3, null=True)
     Activo = models.BooleanField(default=True)
-    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    Poligono = models.TextField(max_length=10000, null=True, blank=True)
 
 
 class Area(models.Model):
@@ -48,7 +48,7 @@ class Area(models.Model):
     Variedad = models.ForeignKey(Variedad, null=False, on_delete=models.CASCADE)
     Hectareas = models.DecimalField(max_digits=7, decimal_places=3, null=True)
     Activo = models.BooleanField(default=True)
-    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    Poligono = models.TextField(max_length=10000, null=True, blank=True)
 
 
 class Planta(models.Model):
@@ -59,27 +59,11 @@ class Planta(models.Model):
     Activo = models.BooleanField(default=True)
     lat = models.DecimalField(max_digits=18, decimal_places=16, null=True)
     lng = models.DecimalField(max_digits=19, decimal_places=16, null=True)
-    VisibleToStudent = models.BooleanField(null=False,default=True)
+    Altitud = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
 
 class PlantaFoto(models.Model):
     uri = models.FileField(storage=FileSystemStorage("/Uploads/Plantas/Fotos"))
-
-
-class Poligono(models.Model):
-    Id_Lote = models.ForeignKey(Lote, on_delete=models.CASCADE, null=True, related_name="Poligonos")
-    Id_Area = models.ForeignKey(Area, on_delete=models.CASCADE, null=True, related_name="Poligonos")
-    FillColor = models.CharField(max_length=7)
-    Activo = models.BooleanField(default=True)
-    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
-
-class GeoCoordenadas(models.Model):
-    Id_Poligono = models.ForeignKey(Poligono, on_delete=models.CASCADE, null=True)
-    lat = models.DecimalField(max_digits=18, decimal_places=16, null=False)
-    lng = models.DecimalField(max_digits=19, decimal_places=16, null=False)
-    Activo = models.BooleanField(default=True)
-    Id_Usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
 class Enfermedad(models.Model):

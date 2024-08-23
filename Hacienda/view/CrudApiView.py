@@ -37,22 +37,26 @@ class CrudApiView(APIView):
             objects = objects.exclude(**{predicate: False})
         return Response(self.serialize_out(objects, many=many))
 
-    def post(self, request):
-        serialized_object = self.serializer(data=request.data)
+    def post(self, request, data=None, *args, **kwargs):
+        if not data:
+            data = request.data
+        serialized_object = self.serializer(data=data)
         if serialized_object.is_valid():
             serialized_object.save()
             return Response(serialized_object.data, status=status.HTTP_200_OK)
         else:
             return Response(serialized_object.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def patch(self, request, *args, **kwargs):
-        id = request.data.get("id")
+    def patch(self, request, data=None, *args, **kwargs):
+        if data is None:
+            data = request.data
+        id = data.get("id")
         if not id:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         object = self.get_object(id)
         if not object:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        serialized_object = self.serializer(object, data=request.data, partial=True)
+        serialized_object = self.serializer(object, data=data, partial=True)
         if serialized_object.is_valid():
             serialized_object.save()
             return Response(serialized_object.data)

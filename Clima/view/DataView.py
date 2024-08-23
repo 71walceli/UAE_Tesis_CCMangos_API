@@ -121,7 +121,7 @@ class DataView(APIView):
         }
         return Response(response, status=status.HTTP_201_CREATED)        
         
-
+    @transaction.atomic
     def delete(self, request):
         try:    
             start = request.GET['start']

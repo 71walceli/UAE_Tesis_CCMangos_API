@@ -25,7 +25,7 @@ class PredictiveApiView(View):
         response = requests.request(method, external_api_url, data=request.body, 
             headers={'Content-Type': request.content_type}  
         )
-        return JsonResponse(response.json(), status=response.status_code)
+        return JsonResponse(response.json(), status=response.status_code, safe=False) 
 
     def get(self, request, *args, **kwargs):
         return self.do_request("GET", request)
