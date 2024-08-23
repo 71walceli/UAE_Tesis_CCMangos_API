@@ -1,4 +1,4 @@
-#set -eu
+set -eu
 export PATH=~/anaconda3/bin/:~/anaconda3/condabin/:${PATH}
 
 TIMEOUT=100
