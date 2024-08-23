@@ -17,7 +17,7 @@ GET {{HOST}}/weather/data
 Authorization: Bearer {{login.response.body.$.access_token}}
 
 ###
-GET {{HOST}}/geolotes
+GET {{HOST}}/lotes
 Authorization: Bearer {{login.response.body.$.access_token}}
 
 ###
