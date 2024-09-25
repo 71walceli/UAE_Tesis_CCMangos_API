@@ -16,9 +16,12 @@ class AreaSerializer(serializers.ModelSerializer):
         ):
             raise ValueError(f"Debe suplir {' o '.join(mutually_exclusive)}, al menos alguno.")
         return data
+    
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation["Codigo_Lote"] = f"{instance.Id_Lote.Codigo_Lote}"
         representation["Codigo"] = f"{representation['Codigo_Lote']}_{instance.Codigo_Area}"
+        representation["NombreÁrea"] = instance.Id_Lote.Nombre
+        representation["NombreCompleto"] = f"{representation['NombreÁrea']} - {instance.Nombre}"
         representation["Plantas"] = [a.id for a in instance.Plantas.filter(Activo = True)]
         return representation

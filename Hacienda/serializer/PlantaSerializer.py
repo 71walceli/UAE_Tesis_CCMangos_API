@@ -16,7 +16,9 @@ class PlantaSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation["Codigo_Area"] = f"{instance.Id_Area.Id_Lote.Codigo_Lote}_{instance.Id_Area.Codigo_Area}"
         representation["Disabled"] = False
-        representation["Codigo"] = f"{representation['Codigo_Area']}_{instance.Codigo_Planta}"
+        representation["Codigo_Area"] = f"{instance.Id_Area.Id_Lote.Codigo_Lote}_{instance.Id_Area.Codigo_Area}"
+        representation["Codigo"] = f"{representation['Codigo_Area']}_{instance.Codigo_Planta}" 
+        representation["NombreLote"] = f"{instance.Id_Area.Id_Lote.Nombre} - {instance.Id_Area.Nombre}"
+        representation["NombreCompleto"] = f"{representation['NombreLote']} - {instance.Nombre or instance.Codigo_Planta}"
         return representation
