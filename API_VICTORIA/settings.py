@@ -83,7 +83,7 @@ REST_FRAMEWORK = {
         # Otros métodos de autenticación, si los necesitas
     ],
 }
-#CORRs setings
+#CORS setings
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
     "OPTIONS",
@@ -95,15 +95,10 @@ CORS_ALLOW_METHODS = [
 
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
-origins=config("CORS_ALLOWED_ORIGINS")
-if origins:
-    CORS_ALLOWED_ORIGINS = origins.split(",")
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS")
+if CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS.split(",")
     print(CORS_ALLOWED_ORIGINS)
-#else:
-#    origins=config("CORS_ALLOWED_ORIGINS")
-#    if origins:
-#        CORS_ALLOWED_ORIGINS = origins.split(",")
-#        print(CORS_ALLOWED_ORIGINS)
 
 # Configuración de JWT
 SIMPLE_JWT = {
